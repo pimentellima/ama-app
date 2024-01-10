@@ -1,6 +1,6 @@
 "use client";
-import { revalidatePath } from "next/cache";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ({
   question,
@@ -18,12 +18,13 @@ export default function ({
     id: number;
     body: string;
     createdAt: Date;
-    authorId: string;
+    authorId: string | null;
     addresseeId: string;
   };
 }) {
   const [reply, setReply] = useState<string>("");
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   async function postReply() {
     try {
@@ -43,27 +44,21 @@ export default function ({
     }
   }
 
-  if (question.answer) {
-    return (
-      <div className="flex border-t border-stone-700 px-2 py-1 mt-1">
-        {question.answer.body}
-      </div>
-    );
-  }
-
   return (
     <>
-      <div className="flex border-t border-stone-700 py-1 mt-1">
+      <div className="flex py-1 mt-1">
         <textarea
           maxLength={500}
           value={reply}
           onChange={(e) => setReply(e.target.value)}
           placeholder="Reply"
-          className="w-full text-start resize-none p-2 h-16 bg-transparent"
+          className="w-full text-start placeholder:text-stone-400
+         resize-none p-2 h-16 bg-transparent"
         />
         <button
           onClick={async () => {
             await postReply();
+            router.refresh()
           }}
           className="px-2"
         >

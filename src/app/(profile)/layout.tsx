@@ -1,8 +1,7 @@
+import UserWidget from "@/components/userwidget";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { ClerkProvider, useUser } from "@clerk/nextjs";
-import UserWidget from "@/components/userwidget";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +16,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </ClerkProvider>
+    <div>
+      <div
+        className="absolute top-5 right-5 flex
+        text-white"
+      >
+        <UserWidget />
+      </div>
+      {children}
+    </div>
   );
 }

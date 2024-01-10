@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Answer" ALTER COLUMN "authorId" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "Question" ALTER COLUMN "authorId" DROP NOT NULL,
+ALTER COLUMN "authorId" SET DATA TYPE TEXT,
+ALTER COLUMN "addresseeId" SET DATA TYPE TEXT;

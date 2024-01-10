@@ -1,8 +1,9 @@
-import { auth, clerkClient } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { NextRequest } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { userId } = auth();
     const { questionId, body } = await request.json();
@@ -24,8 +25,6 @@ export async function POST(request: Request) {
       },
     });
 
-    const { username } = await clerkClient.users.getUser(question.authorId);
-    revalidatePath(`/${username}`);
     return new Response("Question created", { status: 200 });
   } catch (error) {
     return new Response("Internal error", { status: 500 });

@@ -1,10 +1,11 @@
 "use client";
-import { revalidatePath } from "next/cache";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ({ username }: { username: string }) {
   const [question, setQuestion] = useState<string>("");
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   async function postQuestion() {
     try {
@@ -31,11 +32,13 @@ export default function ({ username }: { username: string }) {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask anything"
-          className="w-full text-start resize-none p-2 h-20 bg-transparent"
+          className="w-full text-start placeholder:text-stone-400
+          resize-none p-2 h-16 bg-transparent"
         />
         <button
           onClick={async () => {
             await postQuestion();
+            router.refresh();
           }}
           className="px-2"
         >
