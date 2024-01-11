@@ -43,12 +43,7 @@ export default function ({
 
   return (
     <>
-      {!isCurrentUserPage && (
-        <CreateQuestion
-          setQuestions={setQuestions}
-          username={pageUserUsername}
-        />
-      )}
+      <CreateQuestion setQuestions={setQuestions} username={pageUserUsername} />
       <div className=" flex flex-col gap-2">
         {questions.length === 0 ? (
           <span>No questions</span>
