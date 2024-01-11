@@ -1,6 +1,5 @@
 import { auth } from "@clerk/nextjs";
 import { PrismaClient } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -16,6 +15,8 @@ export async function POST(request: NextRequest) {
       where: { id: questionId },
     });
     if (!question) return new Response("Question not found", { status: 404 });
+    if (question.addresseeId !== userId)
+      return new Response("Unauthorized", { status: 401 });
 
     const data = await prisma.answer.create({
       data: {
