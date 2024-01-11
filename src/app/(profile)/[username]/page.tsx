@@ -13,7 +13,7 @@ async function getQuestions(userId: string) {
     const questions = await prisma.question.findMany({
       where: { addresseeId: userId },
       orderBy: { createdAt: "desc" },
-      take: 2,
+      take: 10,
     });
     const answers = await prisma.answer.findMany({
       where: { questionId: { in: questions.map((q) => q.id) } },
