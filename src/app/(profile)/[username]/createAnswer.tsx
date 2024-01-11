@@ -1,12 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export default function ({
   question,
-  username,
+  setQuestions,
 }: {
-  username: string;
+  setQuestions: Dispatch<SetStateAction<any[]>>;
   question: {
     answer: {
       id: number;
@@ -28,7 +28,7 @@ export default function ({
 
   async function postReply() {
     try {
-      const res = await fetch("api/answer", {
+      const res = await fetch("api/answers", {
         body: JSON.stringify({ body: reply, questionId: question.id }),
         method: "POST",
         headers: {
@@ -38,6 +38,15 @@ export default function ({
       if (res.ok) {
         setMessage("");
         setReply("");
+        const answer = await res.json();
+        setQuestions((questions) => {
+          const newQuestions = [...questions];
+          const index = newQuestions.findIndex((q) => q.id === question.id);
+          if (index === -1) return questions;
+          newQuestions[index].answer = answer;
+          return newQuestions;
+        });
+        router.refresh();
       }
     } catch (e) {
       setMessage("Error while sending reply");
@@ -55,13 +64,7 @@ export default function ({
           className="w-full text-start placeholder:text-stone-400
          resize-none p-2 h-16 bg-transparent"
         />
-        <button
-          onClick={async () => {
-            await postReply();
-            router.refresh()
-          }}
-          className="px-2"
-        >
+        <button onClick={postReply} className="px-2">
           Send
         </button>
       </div>

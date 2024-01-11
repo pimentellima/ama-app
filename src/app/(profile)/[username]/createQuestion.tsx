@@ -1,15 +1,21 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-export default function ({ username }: { username: string }) {
+export default function ({
+  username,
+  setQuestions,
+}: {
+  username: string;
+  setQuestions: Dispatch<SetStateAction<any[]>>;
+}) {
   const [question, setQuestion] = useState<string>("");
   const [message, setMessage] = useState("");
   const router = useRouter();
 
   async function postQuestion() {
     try {
-      const res = await fetch("api/question", {
+      const res = await fetch("api/questions", {
         body: JSON.stringify({ body: question, adresseeUsername: username }),
         method: "POST",
         headers: {
@@ -19,6 +25,9 @@ export default function ({ username }: { username: string }) {
       if (res.ok) {
         setMessage("");
         setQuestion("");
+        const newQuestion = await res.json();
+        setQuestions((questions) => [newQuestion, ...questions]);
+        router.refresh();
       }
     } catch (e) {
       setMessage("Error while sending question");
@@ -26,7 +35,7 @@ export default function ({ username }: { username: string }) {
   }
   return (
     <>
-      <div className="flex border-t border-gray-700 py-1">
+      <div className="flex bg-stone-800 py-1">
         <textarea
           maxLength={1000}
           value={question}
@@ -35,13 +44,7 @@ export default function ({ username }: { username: string }) {
           className="w-full text-start placeholder:text-stone-400
           resize-none p-2 h-16 bg-transparent"
         />
-        <button
-          onClick={async () => {
-            await postQuestion();
-            router.refresh();
-          }}
-          className="px-2"
-        >
+        <button onClick={postQuestion} className="px-2">
           Send
         </button>
       </div>

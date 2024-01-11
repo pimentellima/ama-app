@@ -1,10 +1,8 @@
 import { clerkClient, currentUser } from "@clerk/nextjs";
-import { Prisma, PrismaClient } from "@prisma/client";
-import moment from "moment";
-import CreateAnswer from "./createAnswer";
+import { PrismaClient } from "@prisma/client";
 import CreateQuestion from "./createQuestion";
-import ShareToTwitter from "./shareToTwitter";
 import ListQuestions from "./listQuestions";
+export const dynamic = "force-dynamic";
 
 async function getQuestions(userId: string) {
   try {
@@ -13,7 +11,7 @@ async function getQuestions(userId: string) {
     const questions = await prisma.question.findMany({
       where: { addresseeId: userId },
       orderBy: { createdAt: "desc" },
-      take: 10,
+      take: 2,
     });
     const answers = await prisma.answer.findMany({
       where: { questionId: { in: questions.map((q) => q.id) } },
@@ -72,7 +70,6 @@ export default async function Page({
           <div>{params.username}</div>
           <div>{`${questionsCount} questions`}</div>
         </div>
-        {!isCurrentUserPage && <CreateQuestion username={params.username} />}
       </div>
       <div className="mt-3 w-full">
         <ListQuestions

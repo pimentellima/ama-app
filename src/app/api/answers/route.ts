@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     });
     if (!question) return new Response("Question not found", { status: 404 });
 
-    await prisma.answer.create({
+    const data = await prisma.answer.create({
       data: {
         questionId,
         authorId: userId,
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return new Response("Question created", { status: 200 });
+    return Response.json(data);
   } catch (error) {
     return new Response("Internal error", { status: 500 });
   }

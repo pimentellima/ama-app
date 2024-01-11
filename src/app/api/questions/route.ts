@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       (user) => user.username === adresseeUsername
     );
     if (!adressee) return new Response("Adressee not found", { status: 404 });
-    await prisma.question.create({
+    const data = await prisma.question.create({
       data: {
         addresseeId: adressee.id,
         authorId: userId,
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return new Response("Question created", { status: 200 });
+    return Response.json(data)
   } catch (error) {
     return new Response("Internal error", { status: 500 });
   }
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
     const questions = await prisma.question.findMany({
       where: { addresseeId: user.id },
       orderBy: { createdAt: "desc" },
-      take: 10,
+      take: 2,
       skip: Number(skip),
     });
 
