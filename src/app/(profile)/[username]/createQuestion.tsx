@@ -9,7 +9,7 @@ export default function ({ username }: { username: string }) {
 
   async function postQuestion() {
     try {
-      const res = await fetch("api/createquestion", {
+      const res = await fetch("api/question", {
         body: JSON.stringify({ body: question, adresseeUsername: username }),
         method: "POST",
         headers: {

@@ -28,7 +28,7 @@ export default function ({
 
   async function postReply() {
     try {
-      const res = await fetch("api/createanswer", {
+      const res = await fetch("api/answer", {
         body: JSON.stringify({ body: reply, questionId: question.id }),
         method: "POST",
         headers: {
