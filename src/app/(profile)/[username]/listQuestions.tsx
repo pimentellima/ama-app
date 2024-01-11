@@ -12,10 +12,12 @@ export default function ({
   initialQuestions,
   pageUserUsername,
   pageUserProfilePic,
+  questionsCount,
   isCurrentUserPage,
 }: {
   initialQuestions: any[];
   pageUserUsername: string;
+  questionsCount: number;
   pageUserProfilePic: string;
   isCurrentUserPage: boolean;
 }) {
@@ -46,7 +48,9 @@ export default function ({
       <CreateQuestion setQuestions={setQuestions} username={pageUserUsername} />
       <div className=" flex flex-col gap-2">
         {questions.length === 0 ? (
-          <span>No questions</span>
+          <p className="text-center">
+            No questions for you. Share your profile to receive questions
+          </p>
         ) : (
           questions.map((question, index) => (
             <div
@@ -96,7 +100,9 @@ export default function ({
           onClick={handleLoadMore}
         >
           {loading === "loading" && "Loading..."}
-          {loading === "success" && "Load more"}
+          {loading === "success" &&
+            questionsCount !== questions.length &&
+            "Load more"}
           {loading === "error" && "Error while loading. Try again"}
         </button>
       </div>

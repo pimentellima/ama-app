@@ -73,6 +73,7 @@ export default async function Page({
       </div>
       <div className="mt-3 w-full">
         <ListQuestions
+          questionsCount={questionsCount}
           pageUserProfilePic={pageUser.imageUrl}
           initialQuestions={questions}
           isCurrentUserPage={isCurrentUserPage}
