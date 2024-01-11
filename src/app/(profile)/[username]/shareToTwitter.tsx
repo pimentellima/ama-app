@@ -10,8 +10,11 @@ export default function ({
 }) {
   return (
     <TwitterShareButton
-      // url={`${process.env.NEXT_PUBLIC_BASE_URL}/${username}`}
-      url={"http://github.com"}
+      url={
+        process.env.NEXT_PUBLIC_BASE_URL
+          ? `${process.env.NEXT_PUBLIC_BASE_URL}/${username}`
+          : ""
+      }
       title={text}
     >
       <p className="hover:bg-stone-600 h-12 flex items-center justify-center">
