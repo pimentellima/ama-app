@@ -76,6 +76,7 @@ export default async function Page({
       </div>
       <div className="mt-3 w-full">
         <ListQuestions
+          pageUserProfilePic={pageUser.imageUrl}
           initialQuestions={questions}
           isCurrentUserPage={isCurrentUserPage}
           pageUserUsername={params.username}

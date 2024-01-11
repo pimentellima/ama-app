@@ -4,14 +4,17 @@ import { useState } from "react";
 import CreateAnswer from "./createAnswer";
 import ShareToTwitter from "./shareToTwitter";
 import moment from "moment";
+import Image from "next/image";
 
 export default function ({
   initialQuestions,
   pageUserUsername,
+  pageUserProfilePic,
   isCurrentUserPage,
 }: {
   initialQuestions: any[];
   pageUserUsername: string;
+  pageUserProfilePic: string;
   isCurrentUserPage: boolean;
 }) {
   const [questions, setQuestions] = useState<any[]>(initialQuestions);
@@ -53,12 +56,13 @@ export default function ({
             {question.answer && (
               <div className="flex flex-col">
                 <div className="flex mt-2">
-                  <div
-                    className="rounded-full bg-stone-400 flex
-                       items-center justify-center text-xs h-14 w-14"
-                  >
-                    Avatar
-                  </div>
+                  <Image
+                    width={150}
+                    height={150}
+                    alt="user image"
+                    src={pageUserProfilePic}
+                    className="rounded-full h-14 w-14"
+                  />
                   <div className="ml-2 flex flex-col">
                     <div className="">{pageUserUsername}</div>
                     <p className="text-xs text-stone-400">{`${moment(
@@ -83,7 +87,10 @@ export default function ({
           </div>
         ))
       )}
-      <button className="hover:bg-stone-600" onClick={handleLoadMore}>
+      <button
+        className="hover:bg-stone-600 rounded-sm"
+        onClick={handleLoadMore}
+      >
         {loading === "loading" && "Loading..."}
         {loading === "success" && "Load more"}
         {loading === "error" && "Error while loading. Try again"}

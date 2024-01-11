@@ -45,7 +45,7 @@ export default function ({ username }: { username: string }) {
           Send
         </button>
       </div>
-      <p className="text-xs text-gray-400 p-2 bottom-0">{`${question.length}/1000`}</p>
+      <p className="text-xs text-stone-400 p-2 bottom-0">{`${question.length}/1000`}</p>
       {message && <p className="p-2">{message}</p>}
     </>
   );
