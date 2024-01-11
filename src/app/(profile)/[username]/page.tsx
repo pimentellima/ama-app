@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import moment from "moment";
 import Answer from "./answer";
 import CreateQuestion from "./createQuestion";
+import ShareToTwitter from "./shareToTwitter";
 
 async function getQuestions(userId: string) {
   try {
@@ -94,6 +95,12 @@ export default async function Page({
               )}
               {!question.answer && isCurrentUserPage && (
                 <Answer username={params.username} question={question} />
+              )}
+              {!!question.answer && isCurrentUserPage && (
+                <ShareToTwitter
+                  username={params.username}
+                  text={`${question.body}\n——${question.answer.body}\n\n`}
+                />
               )}
             </div>
           ))
