@@ -1,10 +1,9 @@
 "use client";
 import {
-  ChatBubbleOvalLeftEllipsisIcon,
-  PaperAirplaneIcon,
+  PaperAirplaneIcon
 } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
-import { Dispatch, useState } from "react";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function ({
@@ -63,11 +62,13 @@ export default function ({
           </div>
         </div>
       ) : (
-        <div className="flex justify-end items-center pr-1">
-          <button title="Reply" onClick={() => setShowReply(true)}>
-            <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7 text-stone-300" />
-          </button>
-        </div>
+        <button
+          className="text-center py-2 rounded-md hover:bg-stone-600"
+          title="Reply"
+          onClick={() => setShowReply(true)}
+        >
+          Reply
+        </button>
       )}
     </div>
   );
