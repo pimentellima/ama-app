@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return Response.json(data)
+    return Response.json(data);
   } catch (error) {
     return new Response("Internal error", { status: 500 });
   }
@@ -54,10 +54,12 @@ export async function GET(request: NextRequest) {
       orderBy: { createdAt: "desc" },
     });
 
-    const data = questions.map((question) => ({
-      ...question,
-      answer: answers.find((a) => a.questionId === question.id) || null,
-    }));
+    const data = questions
+      .map((question) => ({
+        ...question,
+        answer: answers.find((a) => a.questionId === question.id) || null,
+      }))
+      .filter((q) => !!q.answer);
     return Response.json(data);
   } catch (error) {
     return new Response("Internal error", { status: 500 });

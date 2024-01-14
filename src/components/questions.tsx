@@ -2,15 +2,17 @@
 
 import moment from "moment";
 import Image from "next/image";
-import CreateAnswer from "./createAnswer";
+import CreateAnswer from "../app/(profile)/inbox/createAnswer";
 import { useState } from "react";
 
 export default function ({
   initialQuestions,
   userImageUrl,
+  isCurrentUser,
   userUsername,
 }: {
   initialQuestions: any[];
+  isCurrentUser: boolean;
   userImageUrl: string;
   userUsername: string;
 }) {
@@ -79,10 +81,12 @@ export default function ({
               </div>
             </div>
           ) : (
-            <CreateAnswer
-              onReplyQuestion={onReplyQuestion}
-              question={question}
-            />
+            isCurrentUser && (
+              <CreateAnswer
+                onReplyQuestion={onReplyQuestion}
+                question={question}
+              />
+            )
           )}
         </div>
       ))}

@@ -1,44 +1,10 @@
+import { fetchQuestions } from "@/app/actions";
 import { currentUser } from "@clerk/nextjs";
-import { PrismaClient } from "@prisma/client";
-import moment from "moment";
-import Image from "next/image";
-import CreateAnswer from "./createAnswer";
-import ShareToTwitter from "./shareToTwitter";
-import Questions from "./questions";
-
-async function getQuestions(userId: string) {
-  const prisma = new PrismaClient();
-
-  const questions = await prisma.question.findMany({
-    where: { addresseeId: userId },
-    orderBy: { createdAt: "desc" },
-    take: 10,
-  });
-  const answers = await prisma.answer.findMany({
-    where: { questionId: { in: questions.map((q) => q.id) } },
-    orderBy: { createdAt: "desc" },
-  });
-  return questions.map((question) => ({
-    ...question,
-    answer: answers.find((a) => a.questionId === question.id) || null,
-  }));
-}
-
-/* async function getQuestionsCount(userId: string) {
-  try {
-    const prisma = new PrismaClient();
-
-    const count = await prisma.question.count({
-      where: { addresseeId: userId },
-    });
-    return count;
-  } catch (error) {
-    return new Response("Internal error", { status: 500 });
-  }
-} */
+import Questions from "../../../components/questions";
 
 export default async function () {
   const user = await currentUser();
+
   if (!user) {
     return {
       redirect: {
@@ -47,7 +13,7 @@ export default async function () {
       },
     };
   }
-  const questions = await getQuestions(user.id);
+  const questions = await fetchQuestions(user.id);
   if (!questions) {
     return (
       <div className="w-[600px] text-center">
@@ -68,6 +34,7 @@ export default async function () {
             <p className="text-center">Your questions will appear here</p>
           ) : (
             <Questions
+              isCurrentUser={true}
               userImageUrl={user.imageUrl}
               userUsername={user.username as string}
               initialQuestions={questions}

@@ -1,6 +1,8 @@
+import { fetchQuestions } from "@/app/actions";
+import Questions from "@/components/questions";
 import { clerkClient, currentUser } from "@clerk/nextjs";
-import { PrismaClient } from "@prisma/client";
-import { getQuestions, getQuestionsCount } from "@/app/actions";
+import Image from "next/image";
+import CreateQuestion from "./createQuestion";
 export const dynamic = "force-dynamic";
 
 export default async function Page({
@@ -8,7 +10,7 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  const user = await currentUser();
+  const loggedUser = await currentUser();
   const pageUser = (
     await clerkClient.users.getUserList({
       username: [params.username],
@@ -16,26 +18,47 @@ export default async function Page({
   )[0];
   if (!pageUser)
     return <div className="px-96 text-center">Usuário não encontrado</div>;
-  const isCurrentUserPage = user?.username === params.username;
 
-  const questionsCount = await getQuestionsCount(pageUser.id);
-  const questions = await getQuestions(pageUser.id);
-  if (questions instanceof Response || questionsCount instanceof Response)
+  const isCurrentUser = pageUser.id === loggedUser?.id;
+
+  const questions = await fetchQuestions(pageUser.id, true);
+  if (!questions)
     return <div className="px-96 text-center">Erro ao carregar perfil</div>;
 
   return (
-    <div className="px-96">
-      <div className="w-full flex flex-col bg-stone-800 rounded-sm">
+    <div className="flex justify-center my-3">
+      <div className="w-[750px] flex flex-col gap-3">
         <div
-          className="grid grid-cols-2 h-12 
-        justify-items-center place-items-center
-        text-lg"
+          className="p-4 rounded-md shadow-sm bg-stone-700
+        flex flex-col"
         >
-          <div>{params.username}</div>
-          <div>{`${questionsCount} questions`}</div>
+          <div className="flex flex-col items-center justify-center">
+            <Image
+              alt="user image"
+              width={150}
+              height={150}
+              src={pageUser.imageUrl}
+              className="flex justify-center rounded-full h-32 w-32"
+            />
+            <p className="mt-2 font-bold tracking-wide">{pageUser.username}</p>
+          </div>
+          <div className="mt-3">
+            <CreateQuestion username={pageUser.username as string} />
+          </div>
         </div>
+        {questions.length === 0 ? (
+          <p className="text-center">This user has no questions yet</p>
+        ) : (
+          <div>
+            <Questions
+              isCurrentUser={isCurrentUser}
+              userImageUrl={pageUser.imageUrl}
+              userUsername={pageUser.username as string}
+              initialQuestions={questions}
+            />
+          </div>
+        )}
       </div>
-      <div className="mt-3 w-full"></div>
     </div>
   );
 }

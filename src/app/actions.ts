@@ -1,11 +1,30 @@
 import { PrismaClient } from "@prisma/client";
 
-export async function fetchQuestions(userId: string, skip?: number) {
+export async function fetchQuestions(
+  userId: string,
+  filterWithAnswers?: boolean
+) {
   const prisma = new PrismaClient();
+
   const questions = await prisma.question.findMany({
     where: { addresseeId: userId },
-    take: 2,
-    skip,
+    orderBy: { createdAt: "desc" },
+    take: 10,
   });
-  return questions;
+  const answers = await prisma.answer.findMany({
+    where: { questionId: { in: questions.map((q) => q.id) } },
+    orderBy: { createdAt: "desc" },
+  });
+  if (filterWithAnswers) {
+    return questions
+      .map((question) => ({
+        ...question,
+        answer: answers.find((a) => a.questionId === question.id) || null,
+      }))
+      .filter((q) => !!q.answer);
+  }
+  return questions.map((question) => ({
+    ...question,
+    answer: answers.find((a) => a.questionId === question.id) || null,
+  }));
 }
