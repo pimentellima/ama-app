@@ -1,4 +1,3 @@
-import UserWidget from "@/components/userwidget";
 import { SignIn, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.2",
+    "@heroicons/react": "^2.1.1",
     "@prisma/client": "^5.7.1",
     "moment": "^2.30.1",
     "next": "14.0.4",

@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import CreateAnswer from "./createAnswer";
-import ShareToTwitter from "./shareToTwitter";
 import moment from "moment";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import CreateAnswer from "./createAnswer";
 import CreateQuestion from "./createQuestion";
+import ShareToTwitter from "./shareToTwitter";
 
 export default function ({
   initialQuestions,
@@ -101,7 +100,7 @@ export default function ({
         >
           {loading === "loading" && "Loading..."}
           {loading === "success" &&
-            questionsCount !== questions.length &&
+            questionsCount > questions.length &&
             "Load more"}
           {loading === "error" && "Error while loading. Try again"}
         </button>

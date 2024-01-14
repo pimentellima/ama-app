@@ -1,6 +1,5 @@
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { PrismaClient } from "@prisma/client";
-import CreateQuestion from "./createQuestion";
 import ListQuestions from "./listQuestions";
 export const dynamic = "force-dynamic";
 
