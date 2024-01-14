@@ -1,5 +1,4 @@
 "use client";
-import { ArrowRightIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -40,7 +39,8 @@ function UserList({
           <span className="hover:underline">{user.username}</span>
         </Link>
         <Link
-          className="hover:bg-stone-600 bg-stone-700 
+          className="dark:hover:bg-stone-600 
+          hover:bg-stone-300 bg-white dark:bg-stone-700 
             py-2 px-4 rounded-full"
           href={`/${user.username}`}
         >
@@ -75,7 +75,8 @@ export default function () {
   };
 
   return (
-    <div className="flex flex-col gap-2 rounded-md shadow-sm bg-stone-700 p-3">
+    <div className="flex flex-col gap-2 rounded-md shadow-sm 
+    bg-white dark:bg-stone-700 p-4">
       <label htmlFor="search">Search for users</label>
       <div className="flex gap-2">
         <input
@@ -83,12 +84,12 @@ export default function () {
           placeholder="Type a username"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-2 bg-stone-600 focus:outline-none rounded-md
+          className="p-2 bg-stone-200 dark:bg-stone-600 focus:outline-none rounded-md
           placeholder:text-stone-400 w-full"
         />
         <button
           onClick={handleSearch}
-          className="hover:bg-stone-600
+          className="hover:bg-stone-300 dark:hover:bg-stone-600
             py-2 px-4 rounded-md"
         >
           Search

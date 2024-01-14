@@ -30,7 +30,8 @@ export default async function RootLayout({
         <html lang="en">
           <Analytics />
           <body className={inter.className}>
-            <header className="grid grid-cols-3 sticky px-16 top-0 w-full h-12 bg-stone-700 shadow-md">
+            <header className="grid grid-cols-3 sticky px-16 top-0 w-full h-12 
+            bg-white dark:bg-stone-700 shadow-md">
               <div className="flex items-center justify-center gap-20 col-start-2">
                 <Link href={"/search"} title="Search users">
                   <MagnifyingGlassIcon className="h-6 w-6" />
@@ -53,7 +54,8 @@ export default async function RootLayout({
       <html lang="en">
         <Analytics />
         <body className={inter.className}>
-          <header className="grid grid-cols-3 sticky px-16 top-0 w-full h-12 bg-stone-700 shadow-md">
+          <header className="grid grid-cols-3 sticky px-16 top-0 w-full h-12 
+          bg-white dark:bg-stone-700 shadow-md">
             <div className="flex items-center justify-between col-start-2">
               <Link href={"/search"} title="Search users">
                 <MagnifyingGlassIcon className="h-6 w-6" />
@@ -69,7 +71,7 @@ export default async function RootLayout({
               </div>
             </div>
           </header>
-          <div className="pt-6">{children}</div>
+          <div className="pt-6 pb-2">{children}</div>
         </body>
       </html>
     </ClerkProvider>

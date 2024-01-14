@@ -18,6 +18,6 @@
 
 @layer base {
   body {
-    @apply bg-stone-800 text-white;
+    @apply dark:text-white text-stone-800 bg-stone-200 dark:bg-stone-800;
   }
 }

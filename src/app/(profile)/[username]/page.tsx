@@ -29,7 +29,7 @@ export default async function Page({
     <div className="flex justify-center">
       <div className="w-[750px] flex flex-col gap-3">
         <div
-          className="p-4 rounded-md shadow-sm bg-stone-700
+          className="p-4 rounded-md shadow-sm bg-white dark:bg-stone-700
         flex flex-col"
         >
           <div className="flex flex-col items-center justify-center">

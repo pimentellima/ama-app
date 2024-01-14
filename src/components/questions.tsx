@@ -49,14 +49,14 @@ function SettingsModal({
     >
       <div
         className="flex flex-col 
-                rounded-md shadow-md bg-stone-700 p-2"
+                rounded-md shadow-md bg-white dark:bg-stone-700 p-2"
       >
         <button
           onClick={() => {
             setOpen(false);
             handleDeleteQuestion(questionId);
           }}
-          className="p-2 hover:bg-stone-600 rounded-md"
+          className="p-2 bg-white hover:bg-stone-300 dark:hover:bg-stone-600 rounded-md"
         >
           Delete question
         </button>
@@ -120,7 +120,8 @@ export default function ({
       {questions.map((question, index) => (
         <div
           key={index}
-          className="px-2 flex flex-col rounded-md bg-stone-700 shadow-sm py-2"
+          className="px-2 flex flex-col rounded-md 
+          bg-white dark:bg-stone-700 shadow-sm py-2"
         >
           {isCurrentUser && (
             <div className="flex justify-end pr-1">
@@ -173,7 +174,7 @@ export default function ({
         ) : (
           <button
             onClick={handleLoadMore}
-            className="hover:bg-stone-600 bg-stone-700 py-2 px-4 rounded-full"
+            className="hover:bg-stone-300 dark:hover:bg-stone-600 bg-white dark:bg-stone-700 py-2 px-4 rounded-full"
           >
             {loading === "success" && "Load more"}
             {loading === "error" && "Error while loading. Try again"}

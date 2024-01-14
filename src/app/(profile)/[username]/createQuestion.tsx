@@ -27,7 +27,8 @@ export default function ({ username }: { username: string }) {
     }
   }
   return (
-    <div className="flex flex-col p-1 bg-stone-600 rounded-md ">
+    <div className="flex flex-col p-1 
+    bg-stone-200 dark:bg-stone-600 rounded-md ">
       <Toaster position="top-center" />
       <textarea
         maxLength={1000}

@@ -45,7 +45,7 @@ export default function ({
     <div className="grid grid-cols-[80%_1gr] mt-2">
       <Toaster position="top-center" />
       {showReply ? (
-        <div className="flex flex-col p-1 bg-stone-600 rounded-md ">
+        <div className="flex flex-col p-1 bg-stone-200 dark:bg-stone-600 rounded-md ">
           <textarea
             maxLength={500}
             value={reply}
@@ -63,8 +63,8 @@ export default function ({
         </div>
       ) : (
         <button
-          className="text-center py-2 rounded-md hover:bg-stone-600"
-          title="Reply"
+          className="text-center py-2 rounded-md 
+          hover:bg-stone-300 dark:hover:bg-stone-600"
           onClick={() => setShowReply(true)}
         >
           Reply
