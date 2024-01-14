@@ -27,7 +27,6 @@ export default function ({
           "Content-Type": "application/json",
         },
       });
-      console.log(res);
       if (!res.ok) {
         return toast.error("Error sending reply");
       }

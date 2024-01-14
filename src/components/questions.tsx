@@ -8,6 +8,7 @@ import Link from "next/link";
 import { ClipLoader } from "react-spinners";
 import { EllipsisHorizontalIcon } from "@heroicons/react/16/solid";
 import Popup from "reactjs-popup";
+import toast, { Toaster } from "react-hot-toast";
 
 function SettingsModal({
   questionId,
@@ -22,11 +23,15 @@ function SettingsModal({
       const res = await fetch(`/api/questions?questionId=${questionId}`, {
         method: "DELETE",
       });
-      if (res.ok) {
-        onDeleteQuestion(questionId);
+      if (!res.ok) {
+        return toast.error("Error deleting question");
       }
+      toast("Question deleted", {
+        icon: "👏",
+      });
+      onDeleteQuestion(questionId);
     } catch (e) {
-      console.log(e);
+      return toast.error("Error deleting question");
     }
   };
 
@@ -111,6 +116,8 @@ export default function ({
 
   return (
     <div className="flex flex-col gap-3">
+      <Toaster position="top-center" />
+
       {questions.map((question, index) => (
         <div
           key={index}
