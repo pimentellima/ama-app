@@ -117,7 +117,6 @@ export default function ({
   return (
     <div className="flex flex-col gap-3">
       <Toaster position="top-center" />
-
       {questions.map((question, index) => (
         <div
           key={index}
