@@ -40,29 +40,34 @@ export default function ({
   }
 
   return (
-    <div className="grid grid-cols-[80%_1gr]">
-      <textarea
-        maxLength={500}
-        value={reply}
-        onChange={(e) => setReply(e.target.value)}
-        placeholder="Reply"
-        className={`${!showReply && "hidden"} flex py-1 mt-1
-      w-full text-start placeholder:text-stone-400
-      resize-none p-2 h-16 bg-transparent focus:ring-stone-300 focus:!border-none`}
-      />
-
-      {message && <p className="p-2">{message}</p>}
-      <div className="w-full flex justify-end items-center mt-2 pr-3">
-        {showReply ? (
-          <button title="Send reply" onClick={postReply}>
-            <PaperAirplaneIcon className="h-7 w-7" />
-          </button>
-        ) : (
+    <div className="grid grid-cols-[80%_1gr] mt-2">
+      {showReply ? (
+        <div className="flex flex-col p-1 bg-stone-600 rounded-md ">
+          <textarea
+            maxLength={500}
+            value={reply}
+            onChange={(e) => setReply(e.target.value)}
+            placeholder="Type here ..."
+            className="w-full text-start placeholder:text-stone-400 bg-transparent
+          resize-none p-2 h-16 focus:outline-none focus:ring-0"
+          />
+          <div className="flex justify-between">
+            <p className="text-xs text-stone-400 p-2 bottom-0">{`${reply.length}/1000`}</p>
+            <button title="Send question" onClick={postReply}>
+              <PaperAirplaneIcon className="h-7 w-7" />
+            </button>
+          </div>
+          {message && <p className="p-2">{message}</p>}
+        </div>
+      ) : (
+        <div className="flex justify-end items-center pr-1">
           <button title="Reply" onClick={() => setShowReply(true)}>
             <ChatBubbleOvalLeftEllipsisIcon className="h-7 w-7 text-stone-300" />
           </button>
-        )}
-      </div>
+        </div>
+      )}
+
+      {message && <p className="p-2">{message}</p>}
     </div>
   );
 }
