@@ -56,7 +56,8 @@ function SettingsModal({
             setOpen(false);
             handleDeleteQuestion(questionId);
           }}
-          className="p-2 bg-white hover:bg-stone-300 dark:hover:bg-stone-600 rounded-md"
+          className="p-2 bg-white hover:bg-stone-300 
+          dark:bg-stone-700 dark:hover:bg-stone-600 rounded-md"
         >
           Delete question
         </button>
