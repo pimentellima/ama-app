@@ -30,7 +30,7 @@ export default async function () {
           <p>Share your profile</p>
           <Link
             href={`/${user.username}`}
-            className="text-xl text-red-500 font-semibold hover:underline"
+            className="text-lg xl:text-xl text-red-500 font-semibold hover:underline"
           >{`${process.env.NEXT_PUBLIC_BASE_URL}/${user.username}`}</Link>
         </div>
         <div className="mt-3">
