@@ -21,11 +21,30 @@ export default async function Layout({
 }) {
   const user = await currentUser();
 
+  if (!user)
+    return (
+      <div>
+        <header className="grid grid-cols-3 sticky px-16 top-0 w-full h-12 bg-stone-700 shadow-md">
+          <div className="flex items-center justify-center gap-20 col-start-2">
+            <Link href={"/search"} title="Search users">
+              <MagnifyingGlassIcon className="h-6 w-6" />
+            </Link>
+            <div className="h-6 w-6">
+              <Link title="Sign in" href={"/"}>
+                <UserCircleIcon className="h-6 w-6" />
+              </Link>
+            </div>
+          </div>
+        </header>
+        <div className="pt-3">{children}</div>
+      </div>
+    );
+
   return (
-    <div>
+    <>
       <header className="grid grid-cols-3 sticky px-16 top-0 w-full h-12 bg-stone-700 shadow-md">
         <div className="flex items-center justify-between col-start-2">
-          <Link href={"/search"} title="Search">
+          <Link href={"/search"} title="Search users">
             <MagnifyingGlassIcon className="h-6 w-6" />
           </Link>
           <Link href={"/inbox"} title="Inbox">
@@ -35,17 +54,11 @@ export default async function Layout({
             <BellIcon className="h-6 w-6" />
           </Link>
           <div className="h-6 w-6">
-            {!!user ? (
-              <UserButton />
-            ) : (
-              <Link title="Sign in" href={"/"}>
-                <UserCircleIcon className="h-6 w-6" />
-              </Link>
-            )}
+            <UserButton />
           </div>
         </div>
       </header>
       <div className="pt-3">{children}</div>
-    </div>
+    </>
   );
 }
