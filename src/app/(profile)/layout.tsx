@@ -1,13 +1,12 @@
 import { UserButton, currentUser } from "@clerk/nextjs";
 import {
-  BellIcon,
   InboxIcon,
   MagnifyingGlassIcon,
-  UserCircleIcon,
+  UserCircleIcon
 } from "@heroicons/react/16/solid";
 import type { Metadata } from "next";
-import "../globals.css";
 import Link from "next/link";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "AskAnon",
@@ -30,9 +29,6 @@ export default async function RootLayout({
           <Link href={"/inbox"} title="Inbox">
             <InboxIcon className="h-6 w-6" />
           </Link>
-          <button title="Notifications">
-            <BellIcon className="h-6 w-6" />
-          </button>
           {!!user ? (
             <UserButton />
           ) : (
