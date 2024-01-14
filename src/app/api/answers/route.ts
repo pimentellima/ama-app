@@ -1,3 +1,4 @@
+import prisma from "@/prismaclient";
 import { auth } from "@clerk/nextjs";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
@@ -10,7 +11,6 @@ export async function POST(request: NextRequest) {
       return new Response("Missing params", { status: 409 });
     }
 
-    const prisma = new PrismaClient();
     const question = await prisma.question.findUnique({
       where: { id: questionId },
     });

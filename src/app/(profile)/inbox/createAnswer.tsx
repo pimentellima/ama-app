@@ -47,12 +47,12 @@ export default function ({
             maxLength={500}
             value={reply}
             onChange={(e) => setReply(e.target.value)}
-            placeholder="Type here ..."
+            placeholder="Type here..."
             className="w-full text-start placeholder:text-stone-400 bg-transparent
           resize-none p-2 h-16 focus:outline-none focus:ring-0"
           />
           <div className="flex justify-between">
-            <p className="text-xs text-stone-400 p-2 bottom-0">{`${reply.length}/1000`}</p>
+            <p className="text-xs text-stone-400 p-2 bottom-0">{`${reply.length}/500`}</p>
             <button title="Send question" onClick={postReply}>
               <PaperAirplaneIcon className="h-7 w-7" />
             </button>

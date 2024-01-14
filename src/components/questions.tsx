@@ -6,6 +6,59 @@ import CreateAnswer from "../app/(profile)/inbox/createAnswer";
 import { useState } from "react";
 import Link from "next/link";
 import { ClipLoader } from "react-spinners";
+import { EllipsisHorizontalIcon } from "@heroicons/react/16/solid";
+import Popup from "reactjs-popup";
+
+function SettingsModal({
+  questionId,
+  onDeleteQuestion,
+}: {
+  questionId: string;
+  onDeleteQuestion: (questionId: string) => void;
+}) {
+  const [open, setOpen] = useState<boolean>(false);
+  const handleDeleteQuestion = async (questionId: string) => {
+    try {
+      const res = await fetch(`/api/questions?questionId=${questionId}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        onDeleteQuestion(questionId);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <Popup
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      open={open}
+      arrow={false}
+      trigger={
+        <button>
+          <EllipsisHorizontalIcon className="w-5 h-5" />
+        </button>
+      }
+    >
+      <div
+        className="flex flex-col 
+                rounded-md shadow-md bg-stone-700 p-2"
+      >
+        <button
+          onClick={() => {
+            setOpen(false);
+            handleDeleteQuestion(questionId);
+          }}
+          className="p-2 hover:bg-stone-600 rounded-md"
+        >
+          Delete question
+        </button>
+      </div>
+    </Popup>
+  );
+}
 
 export default function ({
   initialQuestions,
@@ -33,11 +86,17 @@ export default function ({
     });
   };
 
+  const onDeleteQuestion = (questionId: string) => {
+    setQuestions((questions) =>
+      questions.filter((question) => question.id !== questionId)
+    );
+  };
+
   const handleLoadMore = async () => {
     setLoading("loading");
     try {
       const res = await fetch(
-        `/api/questions?username=${userUsername}&skip=${questions.length}`,
+        `/api/questions/?username=${userUsername}&skip=${questions.length}`,
         {
           method: "GET",
         }
@@ -57,6 +116,14 @@ export default function ({
           key={index}
           className="px-2 flex flex-col rounded-md bg-stone-700 shadow-sm py-2"
         >
+          {isCurrentUser && (
+            <div className="flex justify-end pr-1">
+              <SettingsModal
+                onDeleteQuestion={onDeleteQuestion}
+                questionId={question.id}
+              />
+            </div>
+          )}
           <p className="break-words">{question.body}</p>
           <p className="text-xs text-stone-400">{`${moment(
             question.createdAt
