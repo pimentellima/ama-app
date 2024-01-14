@@ -42,7 +42,7 @@ export default async function RootLayout({
                 </div>
               </div>
             </header>
-            <div className="pt-3">{children}</div>
+            <div className="pt-6">{children}</div>
           </body>
         </html>
       </ClerkProvider>
@@ -69,7 +69,7 @@ export default async function RootLayout({
               </div>
             </div>
           </header>
-          <div className="pt-3">{children}</div>
+          <div className="pt-6">{children}</div>
         </body>
       </html>
     </ClerkProvider>

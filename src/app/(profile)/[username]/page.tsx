@@ -26,7 +26,7 @@ export default async function Page({
     return <div className="px-96 text-center">Erro ao carregar perfil</div>;
 
   return (
-    <div className="flex justify-center my-3">
+    <div className="flex justify-center">
       <div className="w-[750px] flex flex-col gap-3">
         <div
           className="p-4 rounded-md shadow-sm bg-stone-700
