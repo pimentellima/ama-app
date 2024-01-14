@@ -1,6 +1,5 @@
 import prisma from "@/prismaclient";
 import { auth } from "@clerk/nextjs";
-import { PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {

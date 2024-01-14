@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const questions = await prisma.question.findMany({
       where: { addresseeId: user.id },
       orderBy: { createdAt: "desc" },
-      take: 2,
+      take: 10,
       skip: Number(skip),
     });
 

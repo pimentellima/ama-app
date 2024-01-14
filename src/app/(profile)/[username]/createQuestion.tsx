@@ -1,10 +1,10 @@
 "use client";
 import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ({ username }: { username: string }) {
   const [question, setQuestion] = useState<string>("");
-  const [message, setMessage] = useState("");
 
   async function postQuestion() {
     try {
@@ -15,16 +15,20 @@ export default function ({ username }: { username: string }) {
           "Content-Type": "application/json",
         },
       });
-      if (res.ok) {
-        setMessage("");
-        setQuestion("");
+      if (!res.ok) {
+        return toast.error("Error sending question");
       }
+      toast("Question sent", {
+        icon: "👏",
+      });
+      setQuestion("");
     } catch (e) {
-      setMessage("Error while sending question");
+      toast.error("Error sending question");
     }
   }
   return (
     <div className="flex flex-col p-1 bg-stone-600 rounded-md ">
+      <Toaster position="top-center" />
       <textarea
         maxLength={1000}
         value={question}
@@ -39,7 +43,6 @@ export default function ({ username }: { username: string }) {
           <PaperAirplaneIcon className="h-7 w-7" />
         </button>
       </div>
-      {message && <p className="p-2">{message}</p>}
     </div>
   );
 }

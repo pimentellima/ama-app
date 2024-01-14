@@ -5,6 +5,7 @@ import {
 } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
 import { Dispatch, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ({
   question,
@@ -15,7 +16,6 @@ export default function ({
 }) {
   const [showReply, setShowReply] = useState<boolean>(false);
   const [reply, setReply] = useState<string>("");
-  const [message, setMessage] = useState("");
   const router = useRouter();
 
   async function postReply() {
@@ -27,20 +27,25 @@ export default function ({
           "Content-Type": "application/json",
         },
       });
-      if (res.ok) {
-        const data = await res.json();
-        onReplyQuestion(question.id, data);
-        setMessage("");
-        setReply("");
-        router.refresh();
+      console.log(res);
+      if (!res.ok) {
+        return toast.error("Error sending reply");
       }
+      toast("Reply sent", {
+        icon: "👏",
+      });
+      const data = await res.json();
+      onReplyQuestion(question.id, data);
+      setReply("");
+      router.refresh();
     } catch (e) {
-      setMessage("Error while sending reply");
+      toast.error("Error sending reply");
     }
   }
 
   return (
     <div className="grid grid-cols-[80%_1gr] mt-2">
+      <Toaster position="top-center" />
       {showReply ? (
         <div className="flex flex-col p-1 bg-stone-600 rounded-md ">
           <textarea
@@ -57,7 +62,6 @@ export default function ({
               <PaperAirplaneIcon className="h-7 w-7" />
             </button>
           </div>
-          {message && <p className="p-2">{message}</p>}
         </div>
       ) : (
         <div className="flex justify-end items-center pr-1">
@@ -66,8 +70,6 @@ export default function ({
           </button>
         </div>
       )}
-
-      {message && <p className="p-2">{message}</p>}
     </div>
   );
 }
