@@ -1,42 +1,7 @@
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { PrismaClient } from "@prisma/client";
-import ListQuestions from "./listQuestions";
+import { getQuestions, getQuestionsCount } from "@/app/actions";
 export const dynamic = "force-dynamic";
-
-async function getQuestions(userId: string) {
-  try {
-    const prisma = new PrismaClient();
-
-    const questions = await prisma.question.findMany({
-      where: { addresseeId: userId },
-      orderBy: { createdAt: "desc" },
-      take: 2,
-    });
-    const answers = await prisma.answer.findMany({
-      where: { questionId: { in: questions.map((q) => q.id) } },
-      orderBy: { createdAt: "desc" },
-    });
-    return questions.map((question) => ({
-      ...question,
-      answer: answers.find((a) => a.questionId === question.id) || null,
-    }));
-  } catch (error) {
-    return new Response("Internal error", { status: 500 });
-  }
-}
-
-async function getQuestionsCount(userId: string) {
-  try {
-    const prisma = new PrismaClient();
-
-    const count = await prisma.question.count({
-      where: { addresseeId: userId },
-    });
-    return count;
-  } catch (error) {
-    return new Response("Internal error", { status: 500 });
-  }
-}
 
 export default async function Page({
   params,
@@ -59,7 +24,7 @@ export default async function Page({
     return <div className="px-96 text-center">Erro ao carregar perfil</div>;
 
   return (
-    <div className="px-96 my-3">
+    <div className="px-96">
       <div className="w-full flex flex-col bg-stone-800 rounded-sm">
         <div
           className="grid grid-cols-2 h-12 
@@ -70,15 +35,7 @@ export default async function Page({
           <div>{`${questionsCount} questions`}</div>
         </div>
       </div>
-      <div className="mt-3 w-full">
-        <ListQuestions
-          questionsCount={questionsCount}
-          pageUserProfilePic={pageUser.imageUrl}
-          initialQuestions={questions}
-          isCurrentUserPage={isCurrentUserPage}
-          pageUserUsername={params.username}
-        />
-      </div>
+      <div className="mt-3 w-full"></div>
     </div>
   );
 }
