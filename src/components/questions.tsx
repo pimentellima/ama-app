@@ -4,6 +4,7 @@ import moment from "moment";
 import Image from "next/image";
 import CreateAnswer from "../app/(profile)/inbox/createAnswer";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function ({
   initialQuestions,
@@ -70,7 +71,7 @@ export default function ({
                   className="rounded-full h-14 w-14"
                 />
                 <div className="ml-2 flex flex-col">
-                  <div className="">{userUsername}</div>
+                  <Link href={`/${userUsername}`} className="hover:underline">{userUsername}</Link>
                   <p className="text-xs text-stone-400">{`${moment(
                     question.answer.createdAt
                   ).fromNow(true)} ago`}</p>

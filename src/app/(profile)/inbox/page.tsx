@@ -1,6 +1,7 @@
 import { fetchQuestions } from "@/app/actions";
 import { currentUser } from "@clerk/nextjs";
 import Questions from "../../../components/questions";
+import Link from "next/link";
 
 export default async function () {
   const user = await currentUser();
@@ -27,7 +28,10 @@ export default async function () {
       <div className="w-[750px]">
         <div className="text-center rounded-md bg-stone-700 shadow-sm py-4">
           <p>Share your profile</p>
-          <p className="text-lg text-red-700">{`${process.env.NEXT_PUBLIC_BASE_URL}/${user.username}`}</p>
+          <Link
+            href={`/${user.username}`}
+            className="text-lg text-red-700 hover:underline"
+          >{`${process.env.NEXT_PUBLIC_BASE_URL}/${user.username}`}</Link>
         </div>
         <div className="my-3">
           {questions.length === 0 ? (

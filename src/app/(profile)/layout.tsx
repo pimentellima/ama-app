@@ -1,8 +1,9 @@
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, currentUser } from "@clerk/nextjs";
 import {
   BellIcon,
   InboxIcon,
   MagnifyingGlassIcon,
+  UserCircleIcon,
 } from "@heroicons/react/16/solid";
 import type { Metadata } from "next";
 import "../globals.css";
@@ -13,11 +14,12 @@ export const metadata: Metadata = {
   description: "Ask anonymously, get answers anonymously.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await currentUser();
   return (
     <div>
       <header className="grid grid-cols-3 sticky px-16 top-0 w-full h-12 bg-stone-700 shadow-md">
@@ -31,7 +33,13 @@ export default function RootLayout({
           <button title="Notifications">
             <BellIcon className="h-6 w-6" />
           </button>
-          <UserButton afterSignOutUrl="/" />
+          {!!user ? (
+            <UserButton />
+          ) : (
+            <Link title="Sign in" href={"/"}>
+              <UserCircleIcon className="h-6 w-6" />
+            </Link>
+          )}
         </div>
       </header>
       <div className="pt-3">{children}</div>
