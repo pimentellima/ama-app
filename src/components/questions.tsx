@@ -5,6 +5,7 @@ import Image from "next/image";
 import CreateAnswer from "../app/(profile)/inbox/createAnswer";
 import { useState } from "react";
 import Link from "next/link";
+import { ClipLoader } from "react-spinners";
 
 export default function ({
   initialQuestions,
@@ -71,7 +72,9 @@ export default function ({
                   className="rounded-full h-14 w-14"
                 />
                 <div className="ml-2 flex flex-col">
-                  <Link href={`/${userUsername}`} className="hover:underline">{userUsername}</Link>
+                  <Link href={`/${userUsername}`} className="hover:underline">
+                    {userUsername}
+                  </Link>
                   <p className="text-xs text-stone-400">{`${moment(
                     question.answer.createdAt
                   ).fromNow(true)} ago`}</p>
@@ -92,14 +95,17 @@ export default function ({
         </div>
       ))}
       <div className="flex justify-center">
-        <button
-          onClick={handleLoadMore}
-          className="hover:bg-stone-600 bg-stone-700 py-2 px-4 rounded-full"
-        >
-          {loading === "loading" && "Loading..."}
-          {loading === "success" && "Load more"}
-          {loading === "error" && "Error while loading. Try again"}
-        </button>
+        {loading === "loading" ? (
+          <ClipLoader color="white" className="h-6 w-6" />
+        ) : (
+          <button
+            onClick={handleLoadMore}
+            className="hover:bg-stone-600 bg-stone-700 py-2 px-4 rounded-full"
+          >
+            {loading === "success" && "Load more"}
+            {loading === "error" && "Error while loading. Try again"}
+          </button>
+        )}
       </div>
     </div>
   );
