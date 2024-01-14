@@ -2,18 +2,15 @@ import { fetchQuestions } from "@/app/actions";
 import { currentUser } from "@clerk/nextjs";
 import Questions from "../../../components/questions";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function () {
   const user = await currentUser();
 
   if (!user) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
+    return redirect('/')
   }
+  
   const questions = await fetchQuestions(user.id);
   if (!questions) {
     return (
