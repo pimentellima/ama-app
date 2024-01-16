@@ -10,13 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Follow {
+  id          Int    @id @default(autoincrement())
+  followerId  String
+  followingId String
+
+  @@unique([followerId, followingId], name: "follow_unique")
+}
+
 model Question {
   id          Int      @id @default(autoincrement())
   body        String
   createdAt   DateTime @default(now())
   authorId    String?
   addresseeId String
-
 }
 
 model Answer {
@@ -25,5 +32,4 @@ model Answer {
   createdAt  DateTime @default(now())
   authorId   String
   questionId Int
-
 }

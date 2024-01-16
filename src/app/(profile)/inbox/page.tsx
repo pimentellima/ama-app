@@ -1,8 +1,8 @@
-import { fetchQuestions } from "@/app/actions";
 import { currentUser } from "@clerk/nextjs";
 import Questions from "../../../components/questions";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { getQuestions } from "@/app/utils/getQuestions";
 
 export default async function () {
   const user = await currentUser();
@@ -11,7 +11,7 @@ export default async function () {
     return redirect("/");
   }
 
-  const questions = await fetchQuestions(user.id);
+  const questions = await getQuestions(user.id);
   if (!questions) {
     return (
       <div className="w-[600px] text-center">
@@ -30,7 +30,7 @@ export default async function () {
           <p>Share your profile</p>
           <Link
             href={`/${user.username}`}
-            className="text-lg xl:text-xl text-red-500 font-semibold hover:underline"
+            className="text-base xl:text-xl text-red-500 font-semibold hover:underline"
           >{`${process.env.NEXT_PUBLIC_BASE_URL}/${user.username}`}</Link>
         </div>
         <div className="mt-3">
