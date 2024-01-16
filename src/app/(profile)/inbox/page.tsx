@@ -1,5 +1,5 @@
 import { currentUser } from "@clerk/nextjs";
-import Questions from "../../../components/questions";
+import Questions from "../../../components/postList";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getQuestions } from "@/app/utils/getQuestions";
@@ -11,7 +11,7 @@ export default async function () {
     return redirect("/");
   }
 
-  const questions = await getQuestions(user.id);
+  const questions = await getQuestions({ userId: user.id });
   if (!questions) {
     return (
       <div className="w-[600px] text-center">
@@ -41,7 +41,7 @@ export default async function () {
               isCurrentUser={true}
               userImageUrl={user.imageUrl}
               userUsername={user.username as string}
-              initialQuestions={questions}
+              initialPosts={questions}
             />
           )}
         </div>

@@ -67,17 +67,17 @@ function SettingsModal({
 }
 
 export default function ({
-  initialQuestions,
+  initialPosts,
   userImageUrl,
   isCurrentUser,
   userUsername,
 }: {
-  initialQuestions: any[];
+  initialPosts: any[];
   isCurrentUser: boolean;
   userImageUrl: string;
   userUsername: string;
 }) {
-  const [questions, setQuestions] = useState<any[]>(initialQuestions);
+  const [questions, setQuestions] = useState<any[]>(initialPosts);
   const [loading, setLoading] = useState<"error" | "success" | "loading">(
     "success"
   );
@@ -102,7 +102,7 @@ export default function ({
     setLoading("loading");
     try {
       const res = await fetch(
-        `/api/questions/?username=${userUsername}&skip=${questions.length}`,
+        `/api/questions/?username=${userUsername}&skip=${questions.length}&filterAnswers=true`,
         {
           method: "GET",
         }

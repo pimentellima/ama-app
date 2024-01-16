@@ -1,12 +1,14 @@
+import { getQuestions } from "@/app/utils/getQuestions";
 import prisma from "@/prismaclient";
 import { auth, clerkClient } from "@clerk/nextjs";
-import { PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
     const skip = request.nextUrl.searchParams.get("skip") || 0;
     const username = request.nextUrl.searchParams.get("username");
+    const filterAnswers = request.nextUrl.searchParams.get("filterAnswers");
+
     if (!username) return new Response("Missing params", { status: 400 });
 
     const user = (
@@ -15,24 +17,11 @@ export async function GET(request: NextRequest) {
       })
     )[0];
 
-    const questions = await prisma.question.findMany({
-      where: { addresseeId: user.id },
-      orderBy: { createdAt: "desc" },
-      take: 10,
+    const data = await getQuestions({
+      userId: user.id,
       skip: Number(skip),
+      filterAnswers: filterAnswers === "true",
     });
-
-    const answers = await prisma.answer.findMany({
-      where: { questionId: { in: questions.map((q) => q.id) } },
-      orderBy: { createdAt: "desc" },
-    });
-
-    const data = questions
-      .map((question) => ({
-        ...question,
-        answer: answers.find((a) => a.questionId === question.id) || null,
-      }))
-      .filter((q) => !!q.answer);
     return Response.json(data);
   } catch (error) {
     return new Response("Internal error", { status: 500 });
