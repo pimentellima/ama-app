@@ -36,7 +36,18 @@ function UserList({
             src={user.imageUrl}
             className="h-16 w-16 rounded-full"
           />
-          <span className="hover:underline">{user.username}</span>
+          <div className="flex">
+            <span className="hover:underline">{user.username}</span>
+            {user.isFollowing && (
+              <p
+                className="ml-3 text-xs bg-white dark:bg-stone-700 px-1 rounded-full 
+             border dark:border-stone-600 border-stone-300 
+             flex items-center text-stone-700 dark:text-stone-300"
+              >
+                You follow
+              </p>
+            )}
+          </div>
         </Link>
         <Link
           className="dark:hover:bg-stone-600 
@@ -61,9 +72,11 @@ export default function () {
   const handleSearch = async () => {
     setLoading("loading");
     try {
-      const res = await fetch(`api/users?username=${search}`);
+      const res = await fetch(`api/users?search=${search}`);
       if (!res.ok) {
         setLoading("error");
+        setResult([]);
+        return;
       }
       const users = await res.json();
       setLoading("success");
@@ -75,8 +88,10 @@ export default function () {
   };
 
   return (
-    <div className="flex flex-col gap-2 rounded-md shadow-sm 
-    bg-white dark:bg-stone-700 p-4">
+    <div
+      className="flex flex-col gap-2 rounded-md shadow-sm 
+    bg-white dark:bg-stone-700 p-4"
+    >
       <label htmlFor="search">Search for users</label>
       <div className="flex gap-2">
         <input
@@ -95,7 +110,6 @@ export default function () {
           Search
         </button>
       </div>
-
       <UserList users={result} loading={loading} />
     </div>
   );
