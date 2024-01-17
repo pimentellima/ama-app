@@ -99,7 +99,7 @@ export default function ({
     bg-white dark:bg-stone-700 p-4"
     >
       <label htmlFor="search">Search for users</label>
-      <form className="flex gap-2">
+      <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
         <input
           name="search"
           placeholder="Type a username"
