@@ -28,38 +28,34 @@ export default async function () {
                 className="flex justify-between p-3 
                 bg-stone-200 dark:bg-stone-800 rounded-md shadow-sm"
               >
-                <div className="flex items-center">
-                  <Link
-                    href={`/${notification.user.username}`}
-                    className="flex items-center"
-                  >
-                    <Image
-                      alt=""
-                      height={150}
-                      width={150}
-                      src={notification.user.imageUrl}
-                      className="h-16 w-16 rounded-full"
-                    />
-                    <div className="ml-2 flex xl:flex-row flex-col xl:gap-1">
-                      <span className="font-semibold hover:underline">
-                        {notification.user.username}
-                      </span>
-                      {notification.type === "follow" && (
-                        <Link
-                          href={`/${notification.user.username}`}
-                          className="hover:underline"
-                        >
-                          followed you
-                        </Link>
-                      )}
-                      {notification.type === "post" && (
-                        <Link href={`/inbox`} className="hover:underline">
-                          asked you a question
-                        </Link>
-                      )}
-                    </div>
+                {notification.type === "follow" && !!notification.user && (
+                  <div className="flex items-center">
+                    <Link
+                      href={`/${notification.user.username}`}
+                      className="flex gap-1 items-center"
+                    >
+                      <Image
+                        alt=""
+                        height={150}
+                        width={150}
+                        src={notification.user.imageUrl}
+                        className="h-16 w-16 rounded-full"
+                      />
+                      <div className="ml-1 flex gap-1 xl:flex-row flex-col">
+                        <p className="font-semibold hover:underline">
+                          {notification.user.username}
+                        </p>
+                        <p className="hover:underline">followed you</p>
+                      </div>
+                    </Link>
+                  </div>
+                )}
+                {notification.type === "post" && (
+                  <Link href={`/inbox`} className="hover:underline">
+                    Someone asked you a question 🙀
                   </Link>
-                </div>
+                )}
+                <div className="flex items-center"></div>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   {
                     <p className="text-xs text-stone-400">{`${moment(

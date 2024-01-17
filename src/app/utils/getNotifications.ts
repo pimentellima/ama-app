@@ -3,7 +3,7 @@ import { clerkClient, currentUser } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/server";
 
 type Notification = {
-  user: User;
+  user?: User;
   createdAt: Date;
   type: "follow" | "post";
 };
@@ -20,10 +20,9 @@ export default async function getNotifications(): Promise<Notification[]> {
   const posts = await prisma.question.findMany({
     where: { addresseeId: user.id },
   });
-  const postAuthorsIds = posts.map((p) => p.authorId);
 
   const notificationsUsers = await clerkClient.users.getUserList({
-    userId: [...(postAuthorsIds as string[]), ...followersIds],
+    userId: followersIds,
   });
 
   const followNotifications: Notification[] = follows.map((f) => {
@@ -35,16 +34,12 @@ export default async function getNotifications(): Promise<Notification[]> {
     };
   });
 
-  const postNotifications: Notification[] = posts
-    .filter((p) => !!p.authorId)
-    .map((p) => {
-      const user = notificationsUsers.find((u) => u.id === p.authorId) as User;
-      return {
-        type: "post",
-        createdAt: p.createdAt,
-        user,
-      };
-    });
+  const postNotifications: Notification[] = posts.map((p) => {
+    return {
+      type: "post",
+      createdAt: p.createdAt,
+    };
+  });
 
   return [...followNotifications, ...postNotifications]
     .sort((a, b) => {
