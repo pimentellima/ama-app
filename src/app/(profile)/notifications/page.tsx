@@ -30,23 +30,23 @@ export default async function () {
               >
                 <div className="flex items-center">
                   <Link
-                    href={`/${user.username}`}
+                    href={`/${notification.user.username}`}
                     className="flex items-center"
                   >
                     <Image
                       alt=""
                       height={150}
                       width={150}
-                      src={user.imageUrl}
+                      src={notification.user.imageUrl}
                       className="h-16 w-16 rounded-full"
                     />
                     <div className="ml-2 flex xl:flex-row flex-col xl:gap-1">
                       <span className="font-semibold hover:underline">
-                        {user.username}
+                        {notification.user.username}
                       </span>
                       {notification.type === "follow" && (
                         <Link
-                          href={`/${user.username}`}
+                          href={`/${notification.user.username}`}
                           className="hover:underline"
                         >
                           followed you

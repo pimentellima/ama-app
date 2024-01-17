@@ -20,9 +20,7 @@ export default async function getNotifications(): Promise<Notification[]> {
   const posts = await prisma.question.findMany({
     where: { addresseeId: user.id },
   });
-  const postAuthorsIds = posts
-    .filter((p) => !!p.authorId)
-    .map((p) => p.authorId);
+  const postAuthorsIds = posts.map((p) => p.authorId);
 
   const notificationsUsers = await clerkClient.users.getUserList({
     userId: [...(postAuthorsIds as string[]), ...followersIds],
@@ -37,14 +35,16 @@ export default async function getNotifications(): Promise<Notification[]> {
     };
   });
 
-  const postNotifications: Notification[] = posts.map((p) => {
-    const user = notificationsUsers.find((u) => u.id === p.authorId) as User;
-    return {
-      type: "post",
-      createdAt: p.createdAt,
-      user,
-    };
-  });
+  const postNotifications: Notification[] = posts
+    .filter((p) => !!p.authorId)
+    .map((p) => {
+      const user = notificationsUsers.find((u) => u.id === p.authorId) as User;
+      return {
+        type: "post",
+        createdAt: p.createdAt,
+        user,
+      };
+    });
 
   return [...followNotifications, ...postNotifications]
     .sort((a, b) => {
