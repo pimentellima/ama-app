@@ -1,18 +1,20 @@
 import getFeedPosts from "@/app/utils/getFeedPosts";
 import { currentUser } from "@clerk/nextjs";
+import { unstable_noStore } from "next/cache";
 import { redirect } from "next/navigation";
-import PostsFeed from "./postsFeed";
+import Posts from "./posts";
 
 export default async function () {
+  unstable_noStore();
   const user = await currentUser();
   if (!user) redirect("/");
 
-  const initialPosts = await getFeedPosts({ user });
+  const posts = await getFeedPosts({ userId: user.id });
 
   return (
     <div className="flex justify-center">
       <div className="w-[750px]">
-        <PostsFeed initialPosts={JSON.parse(JSON.stringify(initialPosts))} />
+        <Posts initialPosts={posts} />
       </div>
     </div>
   );

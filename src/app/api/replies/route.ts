@@ -1,5 +1,5 @@
 import prisma from "@/prismaclient";
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     if (!userId) {
       return new Response("Missing params", { status: 409 });
     }
-
+    const user = await currentUser()
     const question = await prisma.question.findUnique({
       where: { id: questionId },
     });
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     if (question.addresseeId !== userId)
       return new Response("Unauthorized", { status: 401 });
 
-    const data = await prisma.answer.create({
+    const answer = await prisma.answer.create({
       data: {
         questionId,
         authorId: userId,
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return Response.json(data);
+    return Response.json({ ...question, answer: {...answer, user} });
   } catch (error) {
     return new Response("Internal error", { status: 500 });
   }

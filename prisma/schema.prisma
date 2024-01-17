@@ -24,6 +24,7 @@ model Question {
   createdAt   DateTime @default(now())
   authorId    String?
   addresseeId String
+  answer      Answer?
 }
 
 model Answer {
@@ -31,5 +32,9 @@ model Answer {
   body       String
   createdAt  DateTime @default(now())
   authorId   String
-  questionId Int
+  questionId Int      @unique
+
+  question Question @relation(fields: [questionId], references: [id])
+
+  @@unique([authorId, questionId], name: "answer_unique")
 }

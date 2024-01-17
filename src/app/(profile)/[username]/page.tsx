@@ -1,10 +1,11 @@
-import { getQuestions } from "@/app/utils/getQuestions";
+import { getProfilePosts } from "@/app/utils/getProfilePosts";
 import prisma from "@/prismaclient";
 import { clerkClient, currentUser } from "@clerk/nextjs";
+import { unstable_noStore } from "next/cache";
 import Image from "next/image";
-import CreateQuestion from "./createQuestion";
+import CreatePost from "./createPost";
+import Posts from "./posts";
 import UserInfo from "./userInfo";
-import PostList from "@/components/postList";
 export const dynamic = "force-dynamic";
 
 export default async function Page({
@@ -12,6 +13,8 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
+  unstable_noStore();
+
   const loggedUser = await currentUser();
   const pageUser = (
     await clerkClient.users.getUserList({
@@ -44,12 +47,10 @@ export default async function Page({
       }))
     : false;
 
-  const isCurrentUser = pageUser.id === loggedUser?.id;
-
-  const questions = await getQuestions({
-    userId: pageUser.id,
-    filterAnswers: true,
+  const questions = await getProfilePosts({
+    user: pageUser,
   });
+
   if (!questions)
     return <div className="px-96 text-center">Erro ao carregar perfil</div>;
 
@@ -81,19 +82,14 @@ export default async function Page({
             />
           </div>
           <div className="mt-3">
-            <CreateQuestion username={pageUser.username as string} />
+            <CreatePost username={pageUser.username as string} />
           </div>
         </div>
         {questions.length === 0 ? (
           <p className="text-center">This user has no questions yet</p>
         ) : (
           <div>
-            <PostList
-              isCurrentUser={isCurrentUser}
-              userImageUrl={pageUser.imageUrl}
-              userUsername={pageUser.username as string}
-              initialPosts={questions}
-            />
+            <Posts initialPosts={questions} />
           </div>
         )}
       </div>

@@ -2,22 +2,17 @@
 import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { createPost } from "./actions";
 
-export default function ({ username }: { username: string }) {
+export default function CreatePost({ username }: { username: string }) {
   const [question, setQuestion] = useState<string>("");
 
   async function postQuestion() {
     try {
-      const res = await fetch("api/questions", {
-        body: JSON.stringify({ body: question, adresseeUsername: username }),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      await createPost({
+        body: question,
+        addresseeUsername: username,
       });
-      if (!res.ok) {
-        return toast.error("Error sending question");
-      }
       toast("Question sent", {
         icon: "👏",
       });
@@ -27,8 +22,10 @@ export default function ({ username }: { username: string }) {
     }
   }
   return (
-    <div className="flex flex-col p-1 
-    bg-stone-200 dark:bg-stone-600 rounded-md ">
+    <div
+      className="flex flex-col p-1 
+    bg-stone-200 dark:bg-stone-600 rounded-md "
+    >
       <Toaster position="top-center" />
       <textarea
         maxLength={1000}

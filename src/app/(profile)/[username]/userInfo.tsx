@@ -31,45 +31,42 @@ export default function ({
         <p className="px-2 ">{`${profileData.followersCount} Followers`}</p>
         <p className="pl-2 ">{`${profileData.followingCount} Following`}</p>
       </div>
-      <form
-        action={async () => {
-          const followerId = loggedUser?.id;
-          const followingId = user.id;
-          if (!followerId || !followingId)
-            return toast.error("An error occurred");
+      {!!loggedUser && !isLoggedUser && (
+        <button
+          onClick={async () => {
+            const followerId = loggedUser?.id;
+            const followingId = user.id;
+            if (!followerId || !followingId)
+              return toast.error("An error occurred");
 
-          try {
-            if (profileData.isFollowing) {
-              await unfollow({ followerId, followingId });
+            try {
+              if (profileData.isFollowing) {
+                await unfollow({ followerId, followingId });
+                setProfileData((data) => ({
+                  ...data,
+                  isFollowing: false,
+                  followersCount: data.followersCount - 1,
+                }));
+                return;
+              }
+              await follow({ followerId, followingId });
               setProfileData((data) => ({
                 ...data,
-                isFollowing: false,
-                followersCount: data.followersCount - 1,
+                isFollowing: true,
+                followersCount: data.followersCount + 1,
               }));
-              return;
+            } catch (error) {
+              console.log(error);
+              toast.error("An error occurred");
             }
-            await follow({ followerId, followingId });
-            setProfileData((data) => ({
-              ...data,
-              isFollowing: true,
-              followersCount: data.followersCount + 1,
-            }));
-          } catch (error) {
-            console.log(error);
-            toast.error("An error occurred");
-          }
-        }}
-      >
-        {!!loggedUser && !isLoggedUser && (
-          <button
-            className="mt-2 hover:bg-stone-300 dark:hover:bg-stone-600
+          }}
+          className="mt-2 hover:bg-stone-300 dark:hover:bg-stone-600
              bg-white dark:bg-stone-700 py-2 px-4 rounded-full 
              border dark:border-stone-600 border-stone-300"
-          >
-            {profileData.isFollowing ? "Unfollow" : "Follow"}
-          </button>
-        )}
-      </form>
+        >
+          {profileData.isFollowing ? "Unfollow" : "Follow"}
+        </button>
+      )}
     </>
   );
 }

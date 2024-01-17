@@ -62,7 +62,17 @@ function UserList({
   );
 }
 
-export default function () {
+export default function ({
+  getUsers,
+}: {
+  getUsers: ({
+    skip,
+    search,
+  }: {
+    skip: number;
+    search: string;
+  }) => Promise<any[] | undefined>;
+}) {
   const [search, setSearch] = useState<string>("");
   const [result, setResult] = useState<any[] | null>(null);
   const [loading, setLoading] = useState<"error" | "success" | "loading">(
@@ -72,15 +82,9 @@ export default function () {
   const handleSearch = async () => {
     setLoading("loading");
     try {
-      const res = await fetch(`api/users?search=${search}`);
-      if (!res.ok) {
-        setLoading("error");
-        setResult([]);
-        return;
-      }
-      const users = await res.json();
+      const users = await getUsers({ search, skip: 0 });
       setLoading("success");
-      setResult(users);
+      setResult(users || []);
       return;
     } catch (error) {
       setLoading("error");

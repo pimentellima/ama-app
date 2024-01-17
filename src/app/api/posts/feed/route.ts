@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     const user = await clerkClient.users.getUser(userId);
 
-    const posts = await getFeedPosts({ skip: Number(skip), user });
+    const posts = await getFeedPosts({ skip: Number(skip), userId: user.id });
 
     return Response.json(posts);
   } catch (error) {

@@ -1,18 +1,21 @@
+import { getInboxPosts } from "@/app/utils/getInboxPosts";
 import { currentUser } from "@clerk/nextjs";
-import Questions from "../../../components/postList";
+import { unstable_noStore } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getQuestions } from "@/app/utils/getQuestions";
+import Posts from "./posts";
 
 export default async function () {
+  unstable_noStore();
+
   const user = await currentUser();
 
   if (!user) {
     return redirect("/");
   }
 
-  const questions = await getQuestions({ userId: user.id });
-  if (!questions) {
+  const posts = await getInboxPosts({ user });
+  if (!posts) {
     return (
       <div className="w-[600px] text-center">
         An error occurred while loading questions
@@ -34,15 +37,10 @@ export default async function () {
           >{`${process.env.NEXT_PUBLIC_BASE_URL}/${user.username}`}</Link>
         </div>
         <div className="mt-3">
-          {questions.length === 0 ? (
+          {posts.length === 0 ? (
             <p className="text-center">Your questions will appear here</p>
           ) : (
-            <Questions
-              isCurrentUser={true}
-              userImageUrl={user.imageUrl}
-              userUsername={user.username as string}
-              initialPosts={questions}
-            />
+            <Posts initialPosts={posts} />
           )}
         </div>
       </div>

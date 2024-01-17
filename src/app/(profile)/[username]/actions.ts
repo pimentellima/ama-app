@@ -1,6 +1,23 @@
 "use server";
 
 import prisma from "@/prismaclient";
+import { clerkClient, currentUser } from "@clerk/nextjs";
+
+export async function createPost({
+  body,
+  addresseeUsername,
+}: {
+  addresseeUsername: string;
+  body: string;
+}) {
+  const user = await currentUser();
+  const addressee = await clerkClient.users.getUserList({
+    username: [addresseeUsername],
+  });
+  await prisma.question.create({
+    data: { authorId: user?.id, body, addresseeId: addressee[0].id },
+  });
+}
 
 export async function follow({
   followerId,
@@ -9,7 +26,7 @@ export async function follow({
   followerId: string;
   followingId: string;
 }) {
-  return await prisma.follow.create({ data: { followerId, followingId } });
+  await prisma.follow.create({ data: { followerId, followingId } });
 }
 
 export async function unfollow({
@@ -19,7 +36,7 @@ export async function unfollow({
   followerId: string;
   followingId: string;
 }) {
-  return await prisma.follow.delete({
+  await prisma.follow.delete({
     where: { follow_unique: { followerId, followingId } },
   });
 }

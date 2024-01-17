@@ -3,39 +3,37 @@ import { clerkClient } from "@clerk/nextjs";
 
 export default async function ({
   skip = 0,
-  user,
+  userId,
 }: {
   skip?: number;
-  user: any;
+  userId: string;
 }) {
   const followings = await prisma.follow.findMany({
-    where: { followerId: user.id },
+    where: { followerId: userId },
   });
 
   const answers = await prisma.answer.findMany({
     where: { authorId: { in: followings.map((q) => q.followingId) } },
     orderBy: { createdAt: "desc" },
+    include: { question: true },
+    take: 10,
+    skip,
   });
 
   const users = (await clerkClient.users.getUserList()).filter((u) =>
-    answers.map((a) => a.authorId).includes(u.id)
+    answers.map((a) => answers.map((a) => a.authorId).includes(a.authorId))
   );
 
-  const questions = await prisma.question.findMany({
-    where: { id: { in: answers.map((a) => a.questionId) } },
+  const data = answers.map((answer) => {
+    const { question, ...rest } = answer;
+    return {
+      ...question,
+      answer: {
+        ...rest,
+        user: users.find((u) => u.id === answer.authorId),
+      },
+    };
   });
 
-  const answersWithUserData = answers.map((a) => ({
-    ...a,
-    user: users.find((u) => u.id === a.authorId),
-  }));
-
-  return questions
-    .map((question) => ({
-      ...question,
-      answer:
-        answersWithUserData.find((a) => a.questionId === question.id) || null,
-    }))
-    .filter((q) => !!q.answer)
-    .splice(skip, 10);
+  return JSON.parse(JSON.stringify(data));
 }
