@@ -43,8 +43,8 @@ export default async function getNotifications(): Promise<Notification[]> {
 
   return [...followNotifications, ...postNotifications]
     .sort((a, b) => {
-      if (a.createdAt < b.createdAt) return -1;
-      if (a.createdAt > b.createdAt) return 1;
+      if (a.createdAt > b.createdAt) return -1;
+      if (a.createdAt < b.createdAt) return 1;
       return 0;
     })
     .splice(skip, 10);

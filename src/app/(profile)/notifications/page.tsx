@@ -16,16 +16,16 @@ export default async function () {
   if (!notifications) return <p className="text-center">An error occured</p>;
 
   return (
-    <div className="p-3 bg-white dark:bg-stone-700 rounded-md shadow-sm">
+    <div className="p-2 bg-white dark:bg-stone-700 rounded-md shadow-sm">
       {notifications.length === 0 ? (
         <p className="text-center">You have 0 notifications</p>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {notifications.map((notification, index) => {
             return (
               <div
                 key={index}
-                className="flex justify-between p-3 
+                className="flex justify-between p-2 
                 bg-stone-200 dark:bg-stone-800 rounded-md shadow-sm"
               >
                 {notification.type === "follow" && !!notification.user && (
