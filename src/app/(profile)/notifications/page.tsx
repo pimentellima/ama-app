@@ -41,12 +41,12 @@ export default async function () {
                         src={notification.user.imageUrl}
                         className="h-16 w-16 rounded-full"
                       />
-                      <div className="ml-1 flex gap-1 xl:flex-row flex-col">
-                        <p className="font-semibold hover:underline">
-                          {notification.user.username}
-                        </p>
-                        <p className="hover:underline">followed you</p>
-                      </div>
+                      <p className="ml-1 font-semibold hover:underline">
+                        {notification.user.username}{" "}
+                        <span className="text-nowrap font-normal">
+                          followed you
+                        </span>
+                      </p>
                     </Link>
                   </div>
                 )}
