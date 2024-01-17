@@ -11,11 +11,5 @@ export default async function () {
 
   const posts = await getFeedPosts({ userId: user.id });
 
-  return (
-    <div className="flex justify-center">
-      <div className="w-[750px]">
-        <Posts initialPosts={posts} />
-      </div>
-    </div>
-  );
+  return <Posts initialPosts={posts} />;
 }

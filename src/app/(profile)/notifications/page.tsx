@@ -7,13 +7,11 @@ export default async function () {
     return redirect("/");
   }
   return (
-    <div className="flex justify-center">
-      <div
-        className="w-[750px] flex flex-col p-3 
+    <div
+      className="flex flex-col p-3 
         bg-white dark:bg-stone-700 rounded-md shadow-sm"
-      >
-        <p className="text-center">You have 0 notifications</p>
-      </div>
+    >
+      <p className="text-center">You have 0 notifications</p>
     </div>
   );
 }

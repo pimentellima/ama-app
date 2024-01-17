@@ -1,8 +1,10 @@
+import { User } from "@clerk/nextjs/server";
+import { Answer } from "@prisma/client";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ({ answer }: { answer: any }) {
+export default function ({ answer }: { answer: Answer & { user: User } }) {
   return (
     <div className="flex flex-col">
       <div className="flex mt-2">
@@ -22,7 +24,12 @@ export default function ({ answer }: { answer: any }) {
           ).fromNow(true)} ago`}</p>
         </div>
       </div>
-      <div className="flex border-stone-700 px-2 py-1 mt-2">{answer.body}</div>
+      <div
+        className="flex border-stone-700 px-2 py-1 mt-2
+      break-all"
+      >
+        {answer.body}
+      </div>
     </div>
   );
 }

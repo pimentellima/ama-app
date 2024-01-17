@@ -69,7 +69,12 @@ export default async function RootLayout({
               </div>
             </header>
           )}
-          <div className="pt-3 xl:pt-6 pb-2 xl:px-0 px-2">{children}</div>
+          <div
+            className="flex justify-center 
+          pt-3 xl:pt-6 pb-2 xl:px-0 px-2"
+          >
+            <div className="xl:w-[750px] w-full overflow-hidden">{children}</div>
+          </div>
         </body>
       </html>
     </ClerkProvider>

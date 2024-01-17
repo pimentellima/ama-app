@@ -24,25 +24,23 @@ export default async function () {
   }
 
   return (
-    <div className="flex justify-center">
-      <div className="w-[750px]">
-        <div
-          className="text-center rounded-md bg-white
+    <div>
+      <div
+        className="text-center rounded-md bg-white
          dark:bg-stone-700 shadow-sm py-4"
-        >
-          <p>Share your profile</p>
-          <Link
-            href={`/${user.username}`}
-            className="text-base xl:text-xl text-red-500 font-semibold hover:underline"
-          >{`${process.env.NEXT_PUBLIC_BASE_URL}/${user.username}`}</Link>
-        </div>
-        <div className="mt-3">
-          {posts.length === 0 ? (
-            <p className="text-center">Your questions will appear here</p>
-          ) : (
-            <Posts initialPosts={posts} />
-          )}
-        </div>
+      >
+        <p>Share your profile</p>
+        <Link
+          href={`/${user.username}`}
+          className="text-base xl:text-xl text-red-500 font-semibold hover:underline"
+        >{`${process.env.NEXT_PUBLIC_BASE_URL}/${user.username}`}</Link>
+      </div>
+      <div className="mt-3">
+        {posts.length === 0 ? (
+          <p className="text-center">Your questions will appear here</p>
+        ) : (
+          <Posts initialPosts={posts} />
+        )}
       </div>
     </div>
   );

@@ -55,44 +55,42 @@ export default async function Page({
     return <div className="px-96 text-center">Erro ao carregar perfil</div>;
 
   return (
-    <div className="flex justify-center">
-      <div className="w-[750px] flex flex-col gap-3">
-        <div
-          className="p-4 rounded-md shadow-sm bg-white dark:bg-stone-700
+    <div className="flex flex-col gap-3">
+      <div
+        className="p-4 rounded-md shadow-sm bg-white dark:bg-stone-700
         flex flex-col"
-        >
-          <div className="flex flex-col items-center justify-center">
-            <Image
-              alt="user image"
-              width={150}
-              height={150}
-              src={pageUser.imageUrl}
-              className="flex justify-center rounded-full h-32 w-32"
-            />
-            <p className="mt-2 font-bold tracking-wide">{pageUser.username}</p>
-            <UserInfo
-              loggedUser={JSON.parse(JSON.stringify(loggedUser))}
-              user={JSON.parse(JSON.stringify(pageUser))}
-              initialProfileData={{
-                followersCount,
-                isFollowing,
-                followingCount,
-                questionsCount,
-              }}
-            />
-          </div>
-          <div className="mt-3">
-            <CreatePost username={pageUser.username as string} />
-          </div>
+      >
+        <div className="flex flex-col items-center justify-center">
+          <Image
+            alt="user image"
+            width={150}
+            height={150}
+            src={pageUser.imageUrl}
+            className="flex justify-center rounded-full h-32 w-32"
+          />
+          <p className="mt-2 font-bold tracking-wide">{pageUser.username}</p>
+          <UserInfo
+            loggedUser={JSON.parse(JSON.stringify(loggedUser))}
+            user={JSON.parse(JSON.stringify(pageUser))}
+            initialProfileData={{
+              followersCount,
+              isFollowing,
+              followingCount,
+              questionsCount,
+            }}
+          />
         </div>
-        {questions.length === 0 ? (
-          <p className="text-center">This user has no questions yet</p>
-        ) : (
-          <div>
-            <Posts initialPosts={questions} />
-          </div>
-        )}
+        <div className="mt-3">
+          <CreatePost username={pageUser.username as string} />
+        </div>
       </div>
+      {questions.length === 0 ? (
+        <p className="text-center">This user has no questions yet</p>
+      ) : (
+        <div>
+          <Posts initialPosts={questions} />
+        </div>
+      )}
     </div>
   );
 }
