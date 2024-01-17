@@ -36,16 +36,18 @@ function UserList({
             src={user.imageUrl}
             className="h-16 w-16 rounded-full"
           />
-          <div className="flex">
+          <div className="flex xl:flex-row flex-col">
             <span className="hover:underline">{user.username}</span>
             {user.isFollowing && (
-              <p
-                className="ml-3 text-xs bg-white dark:bg-stone-700 px-1 rounded-full 
-             border dark:border-stone-600 border-stone-300 
-             flex items-center text-stone-700 dark:text-stone-300"
-              >
-                You follow
-              </p>
+              <div className="flex xl:ml-3 mt-1">
+                <p
+                  className="text-xs bg-white dark:bg-stone-700 rounded-full 
+                    border dark:border-stone-600 border-stone-300 px-1
+                    flex justify-center items-center text-stone-700 dark:text-stone-300"
+                >
+                  You follow
+                </p>
+              </div>
             )}
           </div>
         </Link>
@@ -97,23 +99,27 @@ export default function ({
     bg-white dark:bg-stone-700 p-4"
     >
       <label htmlFor="search">Search for users</label>
-      <div className="flex gap-2">
+      <form className="flex gap-2">
         <input
           name="search"
           placeholder="Type a username"
           value={search}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
           onChange={(e) => setSearch(e.target.value)}
           className="p-2 bg-stone-200 dark:bg-stone-600 focus:outline-none rounded-md
           placeholder:text-stone-400 w-full"
         />
         <button
+          type="button"
           onClick={handleSearch}
           className="hover:bg-stone-300 dark:hover:bg-stone-600
             py-2 px-4 rounded-md"
         >
           Search
         </button>
-      </div>
+      </form>
       <UserList users={result} loading={loading} />
     </div>
   );
