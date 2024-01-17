@@ -6,6 +6,7 @@ import moment from "moment";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
+import Link from "next/link";
 
 export default function ({ initialPosts }: { initialPosts: any[] }) {
   const [posts, setPosts] = useState<any[]>(initialPosts);
@@ -28,6 +29,19 @@ export default function ({ initialPosts }: { initialPosts: any[] }) {
       setLoading("error");
     }
   };
+
+  if (posts.length === 0)
+    return (
+      <div className="flex flex-col text-center">
+        <p>No posts to show</p>
+        <Link
+          className="text-lg font-semibold hover:underline"
+          href={"/search"}
+        >
+          Find people to follow
+        </Link>
+      </div>
+    );
 
   return (
     <div className="flex flex-col gap-3">
