@@ -6,17 +6,21 @@ import moment from "moment";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
+import { useParams, useSearchParams } from "next/navigation";
 
 export default function ({ initialPosts }: { initialPosts: any[] }) {
   const [posts, setPosts] = useState<any[]>(initialPosts);
   const [loading, setLoading] = useState<"error" | "success" | "loading">(
     "success"
   );
+  const { username } = useParams();
 
   const handleLoadMore = async () => {
     setLoading("loading");
     try {
-      const res = await fetch(`/api/posts/profile?skip=${posts.length}`);
+      const res = await fetch(
+        `/api/posts/profile?username=${username}&skip=${posts.length}`
+      );
       if (!res.ok) {
         setLoading("error");
       }

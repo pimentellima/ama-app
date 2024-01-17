@@ -10,10 +10,11 @@ export async function GET(request: NextRequest) {
 
     const user = await clerkClient.users.getUserList({ username: [username] });
 
-    const posts = await getProfilePosts({ skip: Number(skip), user });
+    const posts = await getProfilePosts({ skip: Number(skip), user: user[0] });
 
     return Response.json(posts);
   } catch (error) {
+    console.log(error);
     return new Response("Internal error", { status: 500 });
   }
 }

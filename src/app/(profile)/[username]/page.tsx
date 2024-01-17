@@ -87,9 +87,7 @@ export default async function Page({
       {questions.length === 0 ? (
         <p className="text-center">This user has no questions yet</p>
       ) : (
-        <div>
-          <Posts initialPosts={questions} />
-        </div>
+        <Posts initialPosts={questions} />
       )}
     </div>
   );

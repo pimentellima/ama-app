@@ -1,10 +1,11 @@
+import { User } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
 
 export async function getProfilePosts({
   user,
   skip = 0,
 }: {
-  user: any;
+  user: User;
   skip?: number;
 }) {
   const prisma = new PrismaClient();
